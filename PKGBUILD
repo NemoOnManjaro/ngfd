@@ -1,51 +1,48 @@
 ## $Id$
+# Contributor: Chupligin Sergey (NeoChapay) <neochapay@gmail.com>
 
-pkgname=ngfd-git
-pkgver=1.3.1.r0.g2f46e0b
-pkgrel=2
+pkgname=ngfd
+pkgver=1.4.0
+pkgrel=1
 pkgdesc="Non-Graphic Feedback daemon"
 arch=('x86_64' 'aarch64')
 url="https://github.com/sailfishos/ngfd"
 license=('GPL')
 depends=('ohm-plugins-misc'
 	'libpulse' 'pulseaudio'
-	'profiled-git'
+	'profiled'
 	'libcanberra'
 	'gstreamer'
 	'mce'
-	'mce-headers-git')
+	'mce-headers')
 
 makedepends=('git' 'doxygen')
-provides=("${pkgname%-git}")
-source=("${pkgname}::git+${url}")
-md5sums=('SKIP')
-
-pkgver() {
-    cd "$srcdir/${pkgname}"
-    git describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
-}
-
+source=("${url}/archive/refs/tags/$pkgver.tar.gz")
+sha256sums=('362bdb041deb4c4ce9aecc7932849ff071f022580ebc4cd68a6db326032c4687')
 
 prepare() {
-    cd "$srcdir/${pkgname}"
-    git submodule update --init --recursive
+    cd $pkgname-$pkgver
+    rm -rf dbus-gmain
+    git clone https://github.com/sailfishos-mirror/dbus-glib.git dbus-gmain
+    cd dbus-gmain
+    git reset --hard d42176ae4763e5288ef37ea314fe58387faf2005
 }
 
 
 build() {
-    cd "$srcdir/${pkgname}"
-    ./autogen.sh --enable-debug
-    ./configure --prefix=/usr
+    cd $pkgname-$pkgver
+    ./autogen.sh --enable-debug\
+	--prefix=/usr
     make
 }
 
 package() {
-    cd "$srcdir/${pkgname}"
+    cd $pkgname-$pkgver
     make DESTDIR="$pkgdir/" install
 
     rm -f ${pkgdir}/usr/lib/systemd/user/ngfd.service
     mkdir -p ${pkgdir}/usr/lib/systemd/user/
-    cp ${srcdir}/${pkgname}/rpm/ngfd.service ${pkgdir}/usr/lib/systemd/user/ngfd.service
+    cp rpm/ngfd.service ${pkgdir}/usr/lib/systemd/user/ngfd.service
     mkdir -p ${pkgdir}/usr/lib/systemd/user/graphical-session.target.wants
     ln -s ../ngfd.service ${pkgdir}/usr/lib/systemd/user/graphical-session.target.wants
 
