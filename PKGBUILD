@@ -16,7 +16,7 @@ depends=('libpulse'
 	'mce'
 	'mce-headers')
 
-makedepends=('git' 'doxygen')
+makedepends=('git' 'doxygen' 'check')
 source=("${url}/archive/refs/tags/$pkgver.tar.gz"
     '0001-ffmemless-Dont-destroy-empty-table.patch'
     '0002-remove_ohm.patch'
