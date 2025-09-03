@@ -2,7 +2,7 @@
 # Contributor: Chupligin Sergey (NeoChapay) <neochapay@gmail.com>
 
 pkgname=ngfd
-pkgver=1.4.10
+pkgver=1.4.12
 pkgrel=1
 pkgdesc="Non-Graphic Feedback daemon"
 arch=('x86_64' 'aarch64')
@@ -21,7 +21,7 @@ source=("${url}/archive/refs/tags/$pkgver.tar.gz"
     '0002-remove_ohm.patch'
     '0003-Fix-interface.patch'
 )
-sha256sums=('37a0cf47113340c2abd44da32b44697fd71a720e7cbd716c1bb298bd1761d253'
+sha256sums=('3e844863bf11b435029e3261fc25708b24d2063ac4a71171c82346179bf3aa6f'
     '591cf1a0e37da056d3832c81f0114692df02910060755ace34f4dc6391edea7c'
     '81ef8c3a92ed1a45003269a9d356ed996782938298d9cea64c8d81440fce4ff3'
 )
